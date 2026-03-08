@@ -7,3 +7,5 @@ DerivedData/
 .swiftpm/configuration/build.xcconfig
 .swiftpm/xcode/xcuserdata/
 .swiftpm/xcode/xcshareddata/WorkspaceSettings.xcsettings
+*.app
+

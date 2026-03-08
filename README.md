@@ -19,16 +19,24 @@ MacStat sits directly in your macOS menu bar and provides live updates using nat
 
 ## Installation & Running
 
-You can easily run this application directly from your terminal using the Swift Package Manager.
+You can run this application directly from your terminal or package it into a standard macOS application wrapper (`.app`).
 
-1.  Clone the repository or navigate to the project directory:
-    ```bash
-    cd macstat
-    ```
-2.  Run the application:
+**Option 1: Run temporarily via Terminal**
+1.  Run the application using Swift Package Manager:
     ```bash
     swift run
     ```
+
+**Option 2: Build a permanent MacStat.app**
+1. Build the release binary first:
+   ```bash
+   swift build -c release
+   ```
+2. Run the packaging script:
+   ```bash
+   ./build_app.sh
+   ```
+3. A `MacStat.app` folder will be generated. You can now move this `.app` into your `/Applications` folder and even add it to your Login Items to start automatically with macOS!
 
 *Note: You may be prompted by macOS to grant permissions (e.g., Network/Disk access) on the first run, depending on your system's privacy settings.*
 
