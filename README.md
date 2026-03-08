@@ -21,7 +21,19 @@ MacStat sits directly in your macOS menu bar and provides live updates using nat
 
 ## Installation & Running
 
-You can run this application directly from your terminal or package it into a standard macOS application wrapper (`.app`).
+You can install the pre-compiled application directly, or build it yourself from source.
+
+### Setup (Recommended)
+1. Go to the [Releases](https://github.com/arisu1000/macstat/releases) page on this GitHub repository.
+2. Download the latest `MacStat-vX.X.zip` file from the **Assets** section.
+3. Unzip the file and drag the `MacStat.app` into your `/Applications` folder.
+4. Double-click to run! (You can also add it to your Login Items to start automatically upon boot).
+
+*Note: Depending on your system privacy settings, macOS might ask for permissions to monitor network or disk access upon the first launch.*
+
+---
+
+### Build from Source
 
 **Option 1: Run temporarily via Terminal**
 1.  Run the application using Swift Package Manager:
