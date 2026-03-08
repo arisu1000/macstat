@@ -8,4 +8,6 @@ DerivedData/
 .swiftpm/xcode/xcuserdata/
 .swiftpm/xcode/xcshareddata/WorkspaceSettings.xcsettings
 *.app
+AppIcon.icns
+
 
