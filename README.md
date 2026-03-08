@@ -1,5 +1,7 @@
 # MacStat
 
+![MacStat Preview](./screenshot.png)
+
 A lightweight, native macOS menu bar application built with Swift and SwiftUI that monitors your system resources in real-time.
 
 ## Features
