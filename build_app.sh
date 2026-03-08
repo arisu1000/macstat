@@ -20,6 +20,25 @@ rm -rf "${APP_DIR}"
 mkdir -p "${MACOS_DIR}"
 mkdir -p "${RESOURCES_DIR}"
 
+if [ -f "base_icon.png" ]; then
+    echo "Generating App Icon (icns)..."
+    mkdir -p MacStat.iconset
+    sips -z 16 16     base_icon.png --out MacStat.iconset/icon_16x16.png > /dev/null
+    sips -z 32 32     base_icon.png --out MacStat.iconset/icon_16x16@2x.png > /dev/null
+    sips -z 32 32     base_icon.png --out MacStat.iconset/icon_32x32.png > /dev/null
+    sips -z 64 64     base_icon.png --out MacStat.iconset/icon_32x32@2x.png > /dev/null
+    sips -z 128 128   base_icon.png --out MacStat.iconset/icon_128x128.png > /dev/null
+    sips -z 256 256   base_icon.png --out MacStat.iconset/icon_128x128@2x.png > /dev/null
+    sips -z 256 256   base_icon.png --out MacStat.iconset/icon_256x256.png > /dev/null
+    sips -z 512 512   base_icon.png --out MacStat.iconset/icon_256x256@2x.png > /dev/null
+    sips -z 512 512   base_icon.png --out MacStat.iconset/icon_512x512.png > /dev/null
+    sips -z 1024 1024 base_icon.png --out MacStat.iconset/icon_512x512@2x.png > /dev/null
+    iconutil -c icns MacStat.iconset -o AppIcon.icns
+    rm -rf MacStat.iconset
+    cp AppIcon.icns "${RESOURCES_DIR}/"
+    echo "App Icon Generated and Copied."
+fi
+
 echo "Copying binary..."
 cp ".build/release/${APP_NAME}" "${MACOS_DIR}/"
 

@@ -36,6 +36,7 @@ You can run this application directly from your terminal or package it into a st
    ```bash
    ./build_app.sh
    ```
+   *(This script will automatically take the `base_icon.png`, generate an Apple `.icns` file using macOS built-in tools, and package your `.app` bundle).*
 3. A `MacStat.app` folder will be generated. You can now move this `.app` into your `/Applications` folder and even add it to your Login Items to start automatically with macOS!
 
 *Note: You may be prompted by macOS to grant permissions (e.g., Network/Disk access) on the first run, depending on your system's privacy settings.*
