@@ -57,7 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     @objc func updateMenuBar() {
         guard let button = statusItem.button else { return }
         
-        let font = NSFont.monospacedDigitSystemFont(ofSize: 13, weight: .regular)
+        let font = NSFont.monospacedSystemFont(ofSize: 12, weight: .regular)
         let config = NSImage.SymbolConfiguration(pointSize: 13, weight: .regular)
         
         func createAttachment(icon: String) -> NSAttributedString {
@@ -73,7 +73,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         if showCPU {
             attrString.append(createAttachment(icon: "cpu"))
-            attrString.append(NSAttributedString(string: String(format: " %.0f%%", monitor.stats.cpuUsage), attributes: [.font: font]))
+            attrString.append(NSAttributedString(string: String(format: " %3.0f%%", monitor.stats.cpuUsage), attributes: [.font: font]))
             isFirst = false
         }
         
@@ -101,7 +101,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if showBattery {
             if !isFirst { attrString.append(NSAttributedString(string: " · ", attributes: [.font: font])) }
             attrString.append(createAttachment(icon: getBatteryIcon(level: monitor.stats.batteryLevel)))
-            attrString.append(NSAttributedString(string: String(format: " %.0f%%", monitor.stats.batteryLevel), attributes: [.font: font]))
+            attrString.append(NSAttributedString(string: String(format: " %3.0f%%", monitor.stats.batteryLevel), attributes: [.font: font]))
             isFirst = false
         }
         
@@ -133,17 +133,25 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     }
     
     private func formatShortBytes(_ bytes: Double) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useGB, .useMB]
-        formatter.countStyle = .memory
-        return formatter.string(fromByteCount: Int64(bytes))
+        let gb = bytes / 1_073_741_824
+        let mb = bytes / 1_048_576
+        if gb >= 1 {
+            return String(format: "%5.1fG", gb)  // "222.2G" — 6 chars
+        } else {
+            return String(format: "%5.1fM", mb)  // "  0.5M" — 6 chars
+        }
     }
-    
+
     private func formatSpeed(_ bytesPerSec: Double) -> String {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = [.useMB, .useKB, .useBytes]
-        formatter.countStyle = .binary
-        return formatter.string(fromByteCount: Int64(bytesPerSec)) + "/s"
+        let mb = bytesPerSec / 1_048_576
+        let kb = bytesPerSec / 1024
+        if mb >= 1 {
+            return String(format: "%5.1fM/s", mb)  // "  1.5M/s" — 8 chars
+        } else if kb >= 1 {
+            return String(format: "%5.1fK/s", kb)  // "512.0K/s" — 8 chars
+        } else {
+            return String(format: "%5.0fB/s", bytesPerSec)  // "  512B/s" — 8 chars
+        }
     }
 }
 
