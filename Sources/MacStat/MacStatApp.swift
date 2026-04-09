@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import ServiceManagement
 
 @main
 struct MacStatApp: App {
@@ -163,28 +164,29 @@ struct ContentView: View {
     @AppStorage("showDisk") private var showDisk = false
     @AppStorage("showNetwork") private var showNetwork = false
     @AppStorage("showBattery") private var showBattery = false
+    @State private var launchAtLogin: Bool = (SMAppService.mainApp.status == .enabled)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text("MacStat")
                 .font(.headline)
                 .frame(maxWidth: .infinity, alignment: .center)
-            
+
             Divider()
-            
+
             StatRowView(title: "CPU", value: String(format: "%.1f%%", monitor.stats.cpuUsage))
             StatRowView(title: "Memory", value: formatBytes(monitor.stats.memoryUsed) + " / " + formatBytes(monitor.stats.memoryTotal))
             StatRowView(title: "Disk", value: formatBytes(monitor.stats.diskUsed) + " / " + formatBytes(monitor.stats.diskTotal))
             StatRowView(title: "Network", value: "↑ " + formatSpeed(monitor.stats.networkUpload) + "  ↓ " + formatSpeed(monitor.stats.networkDownload))
             StatRowView(title: "Battery", value: String(format: "%.0f%%", monitor.stats.batteryLevel))
-            
+
             Divider()
-            
+
             VStack(alignment: .leading, spacing: 6) {
                 Text("메뉴바 표시 옵션")
                     .font(.caption)
                     .foregroundColor(.secondary)
-                
+
                 HStack(spacing: 12) {
                     Toggle("CPU", isOn: $showCPU)
                     Toggle("Memory", isOn: $showMemory)
@@ -196,9 +198,27 @@ struct ContentView: View {
                 .font(.caption)
             }
             .padding(.vertical, 4)
-            
+
             Divider()
-            
+
+            Toggle("로그인 시 자동 실행", isOn: $launchAtLogin)
+                .toggleStyle(.checkbox)
+                .font(.caption)
+                .onChange(of: launchAtLogin) { newValue in
+                    do {
+                        if newValue {
+                            try SMAppService.mainApp.register()
+                        } else {
+                            try SMAppService.mainApp.unregister()
+                        }
+                    } catch {
+                        // 실패 시 실제 상태로 되돌림
+                        launchAtLogin = (SMAppService.mainApp.status == .enabled)
+                    }
+                }
+
+            Divider()
+
             Button("Quit MacStat") {
                 NSApplication.shared.terminate(nil)
             }
